@@ -2,6 +2,8 @@ package com.takeseem.demo.aop;
 
 import java.text.DecimalFormat;
 
+import org.springframework.aop.framework.AopProxyUtils;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.takeseem.demo.aop.service.CountService;
@@ -14,17 +16,17 @@ public class ProxyPerformanceTest {
 		long time = System.currentTimeMillis();
 		CountService service = (CountService) ac.getBean("countServiceImpl");
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create No Proxy: " + time + " ms");
+		System.out.println("Create No Proxy: " + time + " ms " + service.getClass());
 		
 		time = System.currentTimeMillis();
 		CountService jdkProxy = UtilProxy.createJdkProxy(service, CountService.class);
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create JDK Proxy: " + time + " ms");
-		
+		System.out.println("Create JDK Proxy: " + time + " ms " + jdkProxy.getClass());
+
 		time = System.currentTimeMillis();
 		CountService cglibProxy = UtilProxy.createCglibProxy(service);
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create CGLIB Proxy: " + time + " ms");
+		System.out.println("Create CGLIB Proxy: " + time + " ms " + cglibProxy.getClass());
 		
 		time = System.currentTimeMillis();
 		CountService springInterfaceProxy = (CountService) ac.getBean("countServiceInterface");
@@ -39,17 +41,17 @@ public class ProxyPerformanceTest {
 		time = System.currentTimeMillis();
 		CountService javassistProxy = UtilProxy.createJavassistProxy(service);
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create JAVAASSIST Proxy: " + time + " ms");
+		System.out.println("Create JAVAASSIST Proxy: " + time + " ms " + javassistProxy.getClass());
 
 		time = System.currentTimeMillis();
 		CountService javassistBytecodeProxy = UtilProxy.createJavassistBytecodeProxy(service);
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create JAVAASSIST Bytecode Proxy: " + time + " ms");
+		System.out.println("Create JAVAASSIST Bytecode Proxy: " + time + " ms " + javassistBytecodeProxy.getClass());
 
 		time = System.currentTimeMillis();
 		CountService asmBytecodeProxy = UtilProxy.createAsmProxy(service);
 		time = System.currentTimeMillis() - time;
-		System.out.println("Create ASM Proxy: " + time + " ms");
+		System.out.println("Create ASM Proxy: " + time + " ms " + asmBytecodeProxy.getClass());
 
 		System.out.println("================");
 
