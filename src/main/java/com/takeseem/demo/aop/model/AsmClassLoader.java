@@ -25,7 +25,9 @@ public class AsmClassLoader extends ClassLoader {
 	}
 
 	public synchronized Class<?> getClass(String name, byte[] code) {
-		if (name == null) throw new IllegalArgumentException("name=" + name);
+		if (name == null) {
+			throw new IllegalArgumentException("name=" + name);
+		}
 		return defineClass(name, code, 0, code.length);
 	}
 }
